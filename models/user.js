@@ -50,6 +50,15 @@ userSchema.methods.checkPassword = async function(candidate) {
     return await bcrypt.compare(candidate, this.password);
 };
 
+userSchema.methods.toJSON = function() {
+    const user = this.toObject();
+    user.id = user._id;
+    delete user._id;
+    delete user.__v;
+    delete user.password;
+    return user;
+};
+
 const User = mongoose.model('User', userSchema);
 
 export default User;
