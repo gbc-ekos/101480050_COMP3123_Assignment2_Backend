@@ -89,6 +89,7 @@ export const login = async (req, res) => {
 
     res.status(200).json({
         message: 'Login successful',
-        jwt_token: token
+        jwt_token: token,
+        user
     });
 }
