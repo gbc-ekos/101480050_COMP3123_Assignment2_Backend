@@ -18,6 +18,11 @@ app.use(cors({
     credentials: true
 }));
 
+app.use(cors({
+    origin: 'https://comp3123-frontend.ekosenko.me',
+    credentials: true
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
