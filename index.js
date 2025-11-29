@@ -8,9 +8,16 @@ import {mongooseErrorHandler} from "./middleware/mongooseErrorHandler.js";
 import {connectDB} from "./config/db.js";
 import {authenticate} from "./middleware/auth.js";
 
+import cors from "cors";
+
 await connectDB();
 
 const app = express();
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 

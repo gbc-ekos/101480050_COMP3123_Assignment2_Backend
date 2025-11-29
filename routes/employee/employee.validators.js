@@ -86,3 +86,10 @@ export const deleteValidator = [
         .notEmpty().withMessage('Employee ID (eid) is required').bail()
         .isMongoId().withMessage('Invalid employee ID format')
 ]
+
+export const searchValidator = [
+    query('query')
+        .optional()
+        .trim()
+        .isLength({min: 1, max: 100}).withMessage('Search query must be between 1 and 100 characters')
+]

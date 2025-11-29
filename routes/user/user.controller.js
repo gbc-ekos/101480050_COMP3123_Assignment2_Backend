@@ -42,24 +42,20 @@ export const login = async (req, res) => {
         userByUsername = await User.findOne({
             username: username
         });
-        if (!userByUsername) {
-            const error = new Error('User not found');
-            error.name = 'AuthenticationError';
-            error.status = 404;
-            throw error;
-        }
     }
     // If email is provided, find user by email
     if (email) {
         userByEmail = await User.findOne({
             email: email
         })
-        if (!userByEmail) {
-            const error = new Error('User not found');
-            error.name = 'AuthenticationError';
-            error.status = 404;
-            throw error;
-        }
+    }
+
+    // If none found, reject
+    if (!userByUsername && !userByEmail) {
+        const error = new Error('User not found');
+        error.name = 'AuthenticationError';
+        error.status = 404;
+        throw error;
     }
 
     // If user provided both username and email, check if they match

@@ -1,7 +1,22 @@
 import Employee from "../../models/employee.js";
 
 export const list = async (req, res) => {
-    const employees = await Employee.find();
+    const query = req.query.query;
+
+    let filter = {};
+    if (query) {
+        filter = {
+            $or: [
+                { first_name: { $regex: query, $options: 'i' } },
+                { last_name: { $regex: query, $options: 'i' } },
+                { email: { $regex: query, $options: 'i' } },
+                { position: { $regex: query, $options: 'i' } },
+                { department: { $regex: query, $options: 'i' } }
+            ]
+        };
+    }
+
+    const employees = await Employee.find(filter);
     res.status(200).json(employees);
 }
 
