@@ -13,10 +13,6 @@ import cors from "cors";
 await connectDB();
 
 const app = express();
-app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true
-}));
 
 app.use(cors({
     origin: 'https://comp3123-frontend.ekosenko.me',
