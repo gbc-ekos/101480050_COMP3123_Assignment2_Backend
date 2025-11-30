@@ -34,7 +34,7 @@ export const create = async (req, res) => {
 
     res.status(201).json({
         message: "Employee created successfully",
-        employee_id: newEmployee._id
+        employee: newEmployee
     });
 }
 
