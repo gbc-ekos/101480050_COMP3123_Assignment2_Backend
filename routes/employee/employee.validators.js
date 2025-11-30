@@ -1,4 +1,5 @@
 import {body, param, query} from "express-validator";
+import {isValidPicture, isPictureSizeValid} from "../../middleware/pictureHandler.js";
 
 export const createValidator = [
     body('first_name')
@@ -35,7 +36,12 @@ export const createValidator = [
     body('department')
         .trim()
         .notEmpty().withMessage('Department is required').bail()
-        .isLength({max: 100}).withMessage('Department must be up to 100 characters')
+        .isLength({max: 100}).withMessage('Department must be up to 100 characters'),
+
+    body('picture')
+        .optional()
+        .custom(isValidPicture).withMessage('Picture must be a valid base64 encoded image (data:image/...)').bail()
+        .custom(isPictureSizeValid).withMessage('Picture must be no larger than 5 MB when encoded')
 ]
 
 export const updateValidator = [
@@ -73,7 +79,12 @@ export const updateValidator = [
     body('department')
         .optional()
         .trim()
-        .isLength({max: 100}).withMessage('Department must be up to 100 characters')
+        .isLength({max: 100}).withMessage('Department must be up to 100 characters'),
+
+    body('picture')
+        .optional()
+        .custom(isValidPicture).withMessage('Picture must be a valid base64 encoded image (data:image/...)').bail()
+        .custom(isPictureSizeValid).withMessage('Picture must be no larger than 5 MB when encoded')
 ]
 
 export const idValidator = [

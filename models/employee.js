@@ -43,6 +43,15 @@ const employeeSchema = new mongoose.Schema({
         required: [true, 'Department is required'],
         trim: true,
         maxlength: [100, 'Department cannot exceed 100 characters']
+    },
+    picture: {
+        type: String,
+        default: null,
+        maxlength: [6_750_000, 'Picture must be no larger than 5 MB when encoded'],
+        validate: {
+            validator: (v) => !v || v.startsWith('data:image/'),
+            message: 'Picture must be a valid base64 encoded image'
+        }
     }
 }, {
     timestamps: true
