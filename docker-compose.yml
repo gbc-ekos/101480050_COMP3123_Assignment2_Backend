@@ -3,6 +3,12 @@ services:
     image: ghcr.io/gbc-ekos/comp3123-backend:latest
     container_name: comp3123-backend
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"const http=require('http');const r=http.get('http://localhost:3000/api/v1/emp/employees',res=>{process.exit(res.statusCode<500?0:1)});r.on('error',()=>process.exit(1));\""]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
     networks:
       - traefik
     environment:
@@ -20,6 +26,7 @@ services:
       - traefik.http.routers.comp3123-backend-http.entrypoints=web
       - traefik.http.routers.comp3123-backend-http.middlewares=to-https
       - traefik.http.middlewares.to-https.redirectscheme.scheme=https
+      - traefik.http.services.comp3123-backend.loadbalancer.server.port=3000
 
 networks:
   traefik:
