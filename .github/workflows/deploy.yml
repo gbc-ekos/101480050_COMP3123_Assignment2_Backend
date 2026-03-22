@@ -43,21 +43,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             echo ${{ secrets.GHCR_PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker pull ${{ env.IMAGE_NAME }}:latest
-            docker stop ${{ env.CONTAINER_NAME }} || true
-            docker rm ${{ env.CONTAINER_NAME }} || true
-            docker run -d \
-              --name ${{ env.CONTAINER_NAME }} \
-              --network traefik-net \
-              --restart unless-stopped \
-              -e MONGODB_URI="${{ secrets.MONGODB_URI }}" \
-              -e MONGODB_DBNAME="${{ secrets.MONGODB_DBNAME }}" \
-              -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
-              -e JWT_EXPIRES_IN="${{ secrets.JWT_EXPIRES_IN }}" \
-              --label "traefik.enable=true" \
-              --label "traefik.http.routers.comp3123-backend.rule=Host(\`comp3123-backend.ekosenko.me\`)" \
-              --label "traefik.http.routers.comp3123-backend.entrypoints=websecure" \
-              --label "traefik.http.routers.comp3123-backend.tls.certresolver=letsencrypt" \
-              --label "traefik.http.services.comp3123-backend.loadbalancer.server.port=3000" \
-              ${{ env.IMAGE_NAME }}:latest
+            cd ~/comp3123-backend
+            docker compose pull
+            docker compose up -d --force-recreate
             docker image prune -f

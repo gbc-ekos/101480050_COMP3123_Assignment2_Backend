@@ -1,0 +1,26 @@
+services:
+  comp3123-backend:
+    image: ghcr.io/gbc-ekos/comp3123-backend:latest
+    container_name: comp3123-backend
+    restart: unless-stopped
+    networks:
+      - traefik
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - MONGODB_DBNAME=${MONGODB_DBNAME}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.comp3123-backend.rule=Host(`comp3123-backend.ekosenko.me`)
+      - traefik.http.routers.comp3123-backend.entrypoints=websecure
+      - traefik.http.routers.comp3123-backend.tls.certresolver=le
+      - traefik.http.routers.comp3123-backend-http.rule=Host(`comp3123-backend.ekosenko.me`)
+      - traefik.http.routers.comp3123-backend-http.entrypoints=web
+      - traefik.http.routers.comp3123-backend-http.middlewares=to-https
+      - traefik.http.middlewares.to-https.redirectscheme.scheme=https
+
+networks:
+  traefik:
+    external: true
