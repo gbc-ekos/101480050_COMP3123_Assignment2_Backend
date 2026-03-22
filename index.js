@@ -15,7 +15,7 @@ await connectDB();
 const app = express();
 
 app.use(cors({
-    origin: 'https://comp3123-frontend.ekosenko.me',
+    origin: 'https://comp3123-frontend.ekosenko.me', // CHANGE THIS TO host:port if running locally!
     credentials: true
 }));
 
